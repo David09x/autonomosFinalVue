@@ -17,90 +17,67 @@ export default {
     this.pantalla = new cargando();
   },
   created(){
-    //this.getCitas()
+    
   },
 
   methods: {
-   /* getCitas(){
-      fetch("http://localhost:8000/restaurant")
-      .then((response) => response.json())
-      .then((json) => {
-        //console.log(json.categorias);
-        this.persona = json.categorias;
-        const idClientes = [];
-      for (let i = 0; i < this.persona.length; i++) {
-        idClientes.push(this.persona[i].idCliente);
-      }
-      //console.log(idClientes);
-
+    getCitas2(fechaDada) {
+  
+      this.pantalla.fetchConPromesa("http://localhost:8000/mostrarCitasFecha/" + fechaDada, "Cargando ...", 2)
+      .then(json => {
+        this.estado = json;
+        console.log(this.estado.citasEncontradas);
+        if (this.estado.ok) {
+          this.ponerTabla(this.estado.citasEncontradas);
+          return json;
+        } else {
+          const customId = 'custom-id';
+          if (toast.isActive(customId)) {
+            toast.update(customId, {type: toast.TYPE.WARNING, render:"No hay citas"});
+          } else {
+            toast.warning("No hay citas", {
+              autoClose: 4000,
+              pauseOnFocusLoss: false,
+              transition: toast.TRANSITIONS.FADE,
+              toastId: "custom-id"
+            });
+          }
+          var recogerTabla = document.getElementById("tablaCitas").innerHTML = "";
+          return json;
+        }
       })
-    },*/
-    getCitas2(fechaDada){
-      this.pantalla.contadorAumentando("Cargando ...",2)
-      fetch("http://localhost:8000/mostrarCitasFecha/" + fechaDada)
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        this.estado = json
-        console.log(this.estado.citasEncontradas)
-      if(this.estado.ok){
-        console.log("entra en el true");
-        this.ponerTabla(this.estado.citasEncontradas)
-        return json;
-      } else{
-        const customId = 'custom-id'
-            // Verificar si hay un toast activo con el ID "custom-id"
-            if (toast.isActive(customId)) {
-            // Si hay un toast activo, cerrarlo
-                toast.update(customId, {type: toast.TYPE.WARNING, render:"No hay citas"});
-            } else {
-                // Si no hay un toast activo, mostrar uno nuevo
-                toast.warning("No hay citas", {
-                autoClose: 4000,
-                pauseOnFocusLoss: false,
-                transition: toast.TRANSITIONS.FADE,
-                toastId: "custom-id"
-                });
-            }
-         var recogerTabla =  document.getElementById("tablaCitas").innerHTML = ""
-         return json;
-      }
-
-      })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error al obtener citas:", error);
-        // Aquí puedes manejar el error si lo necesitas
-      })
-      .finally(() => {
-        this.pantalla.borrarCargando();
+        
       });
-      
     },
 
+
     borrarCita(id,nombre){
-      console.log(id)
-      if(confirm("Estas seguro de borrar la cita de " + nombre)){
-        fetch("http://localhost:8000/borrarCita/"+ id)
-        .then((response) => response.json())
-        .then((json) => {
+      
+      if (confirm("Estás seguro de borrar la cita de " + nombre)) {
+        this.pantalla.fetchConPromesa("http://localhost:8000/borrarCita/" + id)
+        .then(json => {
           console.log(json);
-          const customId = 'custom-id'
-            // Verificar si hay un toast activo con el ID "custom-id"
-            if (toast.isActive(customId)) {
-            // Si hay un toast activo, cerrarlo
-                toast.update(customId, {type: toast.TYPE.SUCCESS, render:"se borro la cita correctamente"});
-            } else {
-                // Si no hay un toast activo, mostrar uno nuevo
-                toast.success("se borro la cita correctamente", {
-                autoClose: 4000,
-                pauseOnFocusLoss: false,
-                transition: toast.TRANSITIONS.FADE,
-                toastId: "custom-id"
-                });
-            }
-          this.getCitas2(this.fechaGuardada)
+          const customId = 'custom-id';
+          if (toast.isActive(customId)) {
+            toast.update(customId, { type: toast.TYPE.SUCCESS, render: "Se borró la cita correctamente" });
+          } else {
+            toast.success("Se borró la cita correctamente", {
+              autoClose: 4000,
+              pauseOnFocusLoss: false,
+              transition: toast.TRANSITIONS.FADE,
+              toastId: "custom-id"
+            });
+          }
+          this.getCitas2(this.fechaGuardada);
         })
-      }
+        .catch(error => {
+          console.error("Error al borrar la cita:", error);
+          // Aquí puedes manejar el error si lo necesitas
+        });
+      } 
+
     },
     ponerTabla(datos){
 

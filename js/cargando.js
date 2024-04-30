@@ -61,6 +61,26 @@ export default class pantallaCarga{
           elemento.style = '';
         }
     }
+
+    fetchConPromesa(url,texto,estado){
+      return new Promise((resolve, reject) => {
+          this.contadorAumentando(texto,estado)
+          fetch(url)
+            .then(response => {
+              return response.json();
+            })
+            .then(json => {
+              resolve(json);
+            })
+            .catch(error => {
+              console.error("Error al obtener las balanzas:", error);
+              reject(error);
+            })
+            .finally(() => {
+              this.borrarCargando();
+            });
+        });
+  }
  
 }
 
