@@ -56,7 +56,7 @@ export default {
     borrarCita(id,nombre){
       
       if (confirm("Estás seguro de borrar la cita de " + nombre)) {
-        this.pantalla.fetchConPromesa("http://localhost:8000/borrarCita/" + id)
+        this.pantalla.fetchConPromesa("http://localhost:8000/borrarCita/" + id,"Cargando ...", 2)
         .then(json => {
           console.log(json);
           const customId = 'custom-id';

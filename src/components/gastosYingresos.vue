@@ -57,7 +57,7 @@ methods: {
           }
         } else {
           try {
-            const json = await this.pantalla.fetchConPromesa("http://localhost:8000/mostrarB/" + fecha1 + "/" + fecha2, "Cargando datos...", 2);
+            const json = await this.pantalla.fetchConPromesa("http://localhost:8000/mostrarB/" + fecha1 + "/" + fecha2, "Cargando ...", 2);
 
             this.beneficio = json.beneficios;
             this.agregarSpan(this.beneficio, "obtenerIngresos", "ingresosObtenidos");
@@ -118,7 +118,7 @@ methods: {
           }
         } else {
           try {
-            const json = await this.pantalla.fetchConPromesa("http://localhost:8000/mostrarG/" + fecha1 + "/" + fecha2, "Cargando gastos...", "Cargando");
+            const json = await this.pantalla.fetchConPromesa("http://localhost:8000/mostrarG/" + fecha1 + "/" + fecha2, "Cargando ...", 2);
 
             this.gastos = json.gastos;
             this.agregarSpan(this.gastos, "obtenerGastos", "gastosObtenidos");
