@@ -74,7 +74,7 @@ export default {
         })
         .catch(error => {
           console.error("Error al borrar la cita:", error);
-          // Aquí puedes manejar el error si lo necesitas
+          
         });
       } 
 

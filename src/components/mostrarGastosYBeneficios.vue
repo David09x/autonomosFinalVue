@@ -17,188 +17,136 @@ export default {
     mounted(){
         this.pantalla = new cargando();
     },
-    created(){
-        this.getCitas()
-    },
     methods: {
-        getCitas(){
-            fetch("http://localhost:8000/restaurant")
-            .then((response) => response.json())
-            .then((json) => {
-                //console.log(json.categorias);
-                this.persona = json.categorias;
-                const idClientes = [];
-            for (let i = 0; i < this.persona.length; i++) {
-                idClientes.push(this.persona[i].idCliente);
-            }
-            console.log(idClientes);
-
-            })
-        },
-        async getGastos(fecha,fecha2){
+        async getGastos(fecha, fecha2) {
             var fecha_formateada = fecha.replace(/-/g, '');
             var fecha_formateada2 = fecha2.replace(/-/g, '');
-            // Dividir la fecha en partes
             var partes_fecha = fecha_formateada.split('-');
             var partes_fecha2 = fecha_formateada2.split('-');
             var fechaCalcular = partes_fecha[0];
             var fechaCalcular2 = partes_fecha2[0];
-            if(fecha != "" && fecha2 != ""){
-                if(fechaCalcular <= fechaCalcular2){
-                     try{
-                        this.pantalla.contadorAumentando("Cargando ...", 2);
-                        const response = await fetch("http://localhost:8000/mostrarGastosFechas/"+fecha+ "/" + fecha2)
-                        const json = await response.json()
-                        this.gastosM=json
-                        console.log(this.gastosM)
-                        if(this.gastosM.ok){
-                            this.ponerTablaGastos(this.gastosM.gastos)
-
-                        }else{
-                            var recogerTabla =  document.getElementById("tablaGastosBeneficios")
-
-                            recogerTabla.innerHTML = ""
-                            const customId = 'custom-id'
-                            // Verificar si hay un toast activo con el ID "custom-id"
-                            if (toast.isActive(customId)) {
-                            // Si hay un toast activo, cerrarlo
-                            toast.update(customId, {type: toast.TYPE.INFO, render: "no hay gastos entre las fechas seleccionadas"});
-                            } else {
-                            // Si no hay un toast activo, mostrar uno nuevo
-                            toast.info("no hay gastos entre las fechas seleccionadas", {
-                                autoClose: 4000,
-                                pauseOnFocusLoss: false,
-                                transition: toast.TRANSITIONS.FADE,
-                                toastId: "custom-id"
-                            });
-                            }
-                        }
-                    }catch(error){
-                        console.error("error al intentar agregar gasto", error)
-                    } finally {
-                        this.pantalla.borrarCargando();
-                    }
-                   
-                }else{
-                    var recogerTabla =  document.getElementById("tablaGastosBeneficios")
-
-                    recogerTabla.innerHTML = ""
-                    const customId = 'custom-id'
-                    // Verificar si hay un toast activo con el ID "custom-id"
-                    if (toast.isActive(customId)) {
-                    // Si hay un toast activo, cerrarlo
-                    toast.update(customId, {type: toast.TYPE.ERROR, render: "la fecha primera  no puede ser mayor a la 2"});
-                    } else {
-                    // Si no hay un toast activo, mostrar uno nuevo
-                    toast.error("las fecha primera no puede ser mayor que la 2", {
-                        autoClose: 4000,
-                        pauseOnFocusLoss: false,
-                        transition: toast.TRANSITIONS.FADE,
-                        toastId: "custom-id"
-                    });
-                    }
-                }
-            }else{
-                const customId = 'custom-id'
-                // Verificar si hay un toast activo con el ID "custom-id"
-                if (toast.isActive(customId)) {
-                // Si hay un toast activo, cerrarlo
-                  toast.update(customId, {type: toast.TYPE.ERROR, render: "las fechas no pueden estar vacias"});
-                } else {
-                  // Si no hay un toast activo, mostrar uno nuevo
-                  toast.error("las fechas no pueden estar vacias", {
-                    autoClose: 4000,
-                    pauseOnFocusLoss: false,
-                    transition: toast.TRANSITIONS.FADE,
-                    toastId: "custom-id"
-                  });
-                }
-            }
-        },
-
-        async getBeneficios(fecha,fecha2){
-
             
+            if (fecha !== "" && fecha2 !== "") {
+                if (fechaCalcular <= fechaCalcular2) {
+                try {
+                    
+                    this.gastosM = await this.pantalla.fetchConPromesa("http://localhost:8000/mostrarGastosFechas/" + fecha + "/" + fecha2, "Cargando ...", 2);
+                    console.log(this.gastosM);
+                    if (this.gastosM.ok) {
+                    this.ponerTablaGastos(this.gastosM.gastos);
+                    } else {
+                    var recogerTabla = document.getElementById("tablaGastosBeneficios");
+                    recogerTabla.innerHTML = "";
+                    const customId = 'custom-id';
+                    if (toast.isActive(customId)) {
+                        toast.update(customId, { type: toast.TYPE.INFO, render: "No hay gastos entre las fechas seleccionadas" });
+                    } else {
+                        toast.info("No hay gastos entre las fechas seleccionadas", {
+                        autoClose: 4000,
+                        pauseOnFocusLoss: false,
+                        transition: toast.TRANSITIONS.FADE,
+                        toastId: "custom-id"
+                        });
+                    }
+                    }
+                } catch (error) {
+                    console.error("Error al intentar agregar gasto", error);
+                }
+                } else {
+                var recogerTabla = document.getElementById("tablaGastosBeneficios");
+                recogerTabla.innerHTML = "";
+                const customId = 'custom-id';
+                if (toast.isActive(customId)) {
+                    toast.update(customId, { type: toast.TYPE.ERROR, render: "La fecha primera no puede ser mayor que la segunda" });
+                } else {
+                    toast.error("La fecha primera no puede ser mayor que la segunda", {
+                    autoClose: 4000,
+                    pauseOnFocusLoss: false,
+                    transition: toast.TRANSITIONS.FADE,
+                    toastId: "custom-id"
+                    });
+                }
+                }
+            } else {
+                const customId = 'custom-id';
+                if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.ERROR, render: "Las fechas no pueden estar vacías" });
+                } else {
+                toast.error("Las fechas no pueden estar vacías", {
+                    autoClose: 4000,
+                    pauseOnFocusLoss: false,
+                    transition: toast.TRANSITIONS.FADE,
+                    toastId: "custom-id"
+                });
+                }
+            }
+        },
+
+
+        async getBeneficios(fecha, fecha2) {
             var fecha_formateada = fecha.replace(/-/g, '');
             var fecha_formateada2 = fecha2.replace(/-/g, '');
-            // Dividir la fecha en partes
             var partes_fecha = fecha_formateada.split('-');
             var partes_fecha2 = fecha_formateada2.split('-');
             var fechaCalcular = partes_fecha[0];
             var fechaCalcular2 = partes_fecha2[0];
 
-            if(fecha != "" && fecha2 != ""){
-                
-                if(fechaCalcular <= fechaCalcular2){
-                    
-                    try{
-                        this.pantalla.contadorAumentando("Cargando ...",2)
-                        const response = await fetch("http://localhost:8000/mostrarBeneficiosFechas/"+fecha+ "/" + fecha2)
-                        const json = await response.json()
-                        this.beneficiosM=json
-                        console.log(this.beneficiosM)
-                        if(this.beneficiosM.ok){
-                            this.ponerTablaBeneficios(this.beneficiosM.beneficios)
-
-                        }else{
-                            var recogerTabla =  document.getElementById("tablaGastosBeneficios")
-                            recogerTabla.innerHTML = ""
-                            const customId = 'custom-id'
-                            // Verificar si hay un toast activo con el ID "custom-id"
-                            if (toast.isActive(customId)) {
-                            // Si hay un toast activo, cerrarlo
-                            toast.update(customId, {type: toast.TYPE.INFO, render: "no hay beneficios entre las fechas seleccionadas"});
-                            } else {
-                            // Si no hay un toast activo, mostrar uno nuevo
-                            toast.info("no hay beneficios entre las fechas seleccionadas", {
-                                autoClose: 4000,
-                                pauseOnFocusLoss: false,
-                                transition: toast.TRANSITIONS.FADE,
-                                toastId: "custom-id"
+            if (fecha !== "" && fecha2 !== "") {
+                if (fechaCalcular <= fechaCalcular2) {
+                    try {
+                        const json = await this.pantalla.fetchConPromesa("http://localhost:8000/mostrarBeneficiosFechas/" + fecha + "/" + fecha2, "Cargando ...", 2);
+                        this.beneficiosM = json;
+                        console.log(this.beneficiosM);
+                        if (this.beneficiosM.ok) {
+                        this.ponerTablaBeneficios(this.beneficiosM.beneficios);
+                        } else {
+                        var recogerTabla = document.getElementById("tablaGastosBeneficios");
+                        recogerTabla.innerHTML = "";
+                        const customId = 'custom-id';
+                        if (toast.isActive(customId)) {
+                            toast.update(customId, { type: toast.TYPE.INFO, render: "No hay beneficios entre las fechas seleccionadas" });
+                        } else {
+                            toast.info("No hay beneficios entre las fechas seleccionadas", {
+                            autoClose: 4000,
+                            pauseOnFocusLoss: false,
+                            transition: toast.TRANSITIONS.FADE,
+                            toastId: "custom-id"
                             });
-                            }
                         }
-                    }catch(error){
-                        console.error("error al intentar agregar gasto", error)
-                    }finally {
-                        this.pantalla.borrarCargando();
-                    }
-                }else{
-                    var recogerTabla =  document.getElementById("tablaGastosBeneficios")
-                    recogerTabla.innerHTML = ""
-                        const customId = 'custom-id'
-                    // Verificar si hay un toast activo con el ID "custom-id"
-                    if (toast.isActive(customId)) {
-                    // Si hay un toast activo, cerrarlo
-                    toast.update(customId, {type: toast.TYPE.ERROR, render: "la fecha primera  no puede ser mayor a la 2"});
-                    } else {
-                    // Si no hay un toast activo, mostrar uno nuevo
-                    toast.error("las fecha primera no puede ser mayor que la 2", {
-                        autoClose: 4000,
-                        pauseOnFocusLoss: false,
-                        transition: toast.TRANSITIONS.FADE,
-                        toastId: "custom-id"
-                    });
-                    }
-                }
-            }else{
-              
-                const customId = 'custom-id'
-                // Verificar si hay un toast activo con el ID "custom-id"
-                if (toast.isActive(customId)) {
-                // Si hay un toast activo, cerrarlo
-                  toast.update(customId, {type: toast.TYPE.ERROR, render: "las fechas no pueden estar vacias"});
+                        }
+                    } catch (error) {
+                        console.error("Error al intentar agregar gasto", error);
+                    } 
                 } else {
-                  // Si no hay un toast activo, mostrar uno nuevo
-                  toast.error("las fechas no pueden estar vacias", {
+                var recogerTabla = document.getElementById("tablaGastosBeneficios");
+                recogerTabla.innerHTML = "";
+                const customId = 'custom-id';
+                if (toast.isActive(customId)) {
+                    toast.update(customId, { type: toast.TYPE.ERROR, render: "La fecha primera no puede ser mayor que la segunda" });
+                } else {
+                    toast.error("La fecha primera no puede ser mayor que la segunda", {
                     autoClose: 4000,
                     pauseOnFocusLoss: false,
                     transition: toast.TRANSITIONS.FADE,
                     toastId: "custom-id"
-                  });
+                    });
+                }
+                }
+            } else {
+                const customId = 'custom-id';
+                if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.ERROR, render: "Las fechas no pueden estar vacías" });
+                } else {
+                toast.error("Las fechas no pueden estar vacías", {
+                    autoClose: 4000,
+                    pauseOnFocusLoss: false,
+                    transition: toast.TRANSITIONS.FADE,
+                    toastId: "custom-id"
+                });
                 }
             }
         },
+
         
         ponerTablaGastos(datos) {
             var recogerTabla = document.getElementById("tablaGastosBeneficios");
