@@ -18,167 +18,138 @@ data(){
         gastos2: ""
     }
 },
-
-created(){
-    this.getCitas()
-},
-
 methods: {
-
-    getCitas(){
-      fetch("http://localhost:8000/restaurant")
-      .then((response) => response.json())
-      .then((json) => {
-        //console.log(json.categorias);
-        this.persona = json.categorias;
-        console.log(this.persona)
-      })
-    },
     
-    ensenyarBeneficios(fecha1,fecha2){
-      const customId = 'custom-id'
-        if(fecha1 == "" || fecha2 == ""){
-          const customId = 'custom-id'
-            // Verificar si hay un toast activo con el ID "custom-id"
-            if (toast.isActive(customId)) {
-            // Si hay un toast activo, cerrarlo
-              toast.update(customId, {type: toast.TYPE.ERROR , render: "las fechas  no pueden estar vacias"});
-            } else {
-              // Si no hay un toast activo, mostrar uno nuevo
-              toast.error("las fechas  no pueden estar vacias", {
-                autoClose: 4000,
-                pauseOnFocusLoss: false,
-                transition: toast.TRANSITIONS.FADE,
-                toastId: "custom-id"
-              });
-            }
-        }else{
-            var fecha_formateada = fecha1.replace(/-/g, '');
-            var fecha_formateada2 = fecha2.replace(/-/g, '');
-            // Dividir la fecha en partes
-            var partes_fecha = fecha_formateada.split('-');
-            var partes_fecha2 = fecha_formateada2.split('-');
-            var fechaCalcular = partes_fecha[0];
-            var fechaCalcular2 = partes_fecha2[0];
-            if(fechaCalcular <= fechaCalcular2){
+  async ensenyarBeneficios(fecha1, fecha2) {
+      const customId = 'custom-id';
 
-              fetch("http://localhost:8000/mostrarB/"+fecha1+"/"+fecha2)
-              .then((response) => response.json())
-              .then((json) => {
-                //console.log(json.categorias);
-                this.beneficio = json.beneficios;
-                this.agregarSpan(this.beneficio,"obtenerIngresos","ingresosObtenidos")
-                if(this.beneficio!= "" && this.gastos != ""){
-                  const customId = 'custom-id'
-                  if (toast.isActive(customId)) {
-                  // Si hay un toast activo, cerrarlo
-                    toast.update(customId, {  type: toast.TYPE.INFO ,render: "total es " + (this.beneficio-this.gastos)});
-                  } else {
-                    // Si no hay un toast activo, mostrar uno nuevo
-                    toast.info("total es " + (this.beneficio-this.gastos), {
-                      position: toast.POSITION.TOP_CENTER, // Para mostrar el toast desde arriba
-                      autoClose: false, // Para que no se cierre automáticamente
-                      closeButton: false, // Para ocultar el botón de cierre
-                      hideProgressBar: true, // Para ocultar la barra de progreso
-                      toastId: customId,
-                      pauseOnFocusLoss: false,
-                      transition: toast.TRANSITIONS.FLIP,
-                    });
-                  }
-                }
-              })
-            }else{
-              const customId = 'custom-id'
-                // Verificar si hay un toast activo con el ID "custom-id"
-                if (toast.isActive(customId)) {
-                // Si hay un toast activo, cerrarlo
-                  toast.update(customId, {type: toast.TYPE.ERROR , render: "las fecha primera no puede ser mayor que la 2"});
-                } else {
-                  // Si no hay un toast activo, mostrar uno nuevo
-                  toast.error("las fecha primera no puede ser mayor que la 2", {
-                    autoClose: 4000,
-                    pauseOnFocusLoss: false,
-                    transition: toast.TRANSITIONS.FADE,
-                    toastId: "custom-id"
-                  });
-                }
-            }
-          
+      if (fecha1 === "" || fecha2 === "") {
+        if (toast.isActive(customId)) {
+          toast.update(customId, { type: toast.TYPE.ERROR, render: "Las fechas no pueden estar vacías" });
+        } else {
+          toast.error("Las fechas no pueden estar vacías", {
+            autoClose: 4000,
+            pauseOnFocusLoss: false,
+            transition: toast.TRANSITIONS.FADE,
+            toastId: customId
+          });
         }
-    },
+        return;
+      }
 
-    ensenyarGastos(fecha1,fecha2){
-      const customId = 'custom-id'
-        if(fecha1 == "" || fecha2 == ""){
-          const customId = 'custom-id'
-          // Verificar si hay un toast activo con el ID "custom-id"
+      const fecha_formateada = fecha1.replace(/-/g, '');
+      const fecha_formateada2 = fecha2.replace(/-/g, '');
+      const partes_fecha = fecha_formateada.split('-');
+      const partes_fecha2 = fecha_formateada2.split('-');
+      const fechaCalcular = partes_fecha[0];
+      const fechaCalcular2 = partes_fecha2[0];
+
+      if (fechaCalcular > fechaCalcular2) {
+        if (toast.isActive(customId)) {
+          toast.update(customId, { type: toast.TYPE.ERROR, render: "La fecha primera no puede ser mayor que la segunda" });
+        } else {
+          toast.error("La fecha primera no puede ser mayor que la segunda", {
+            autoClose: 4000,
+            pauseOnFocusLoss: false,
+            transition: toast.TRANSITIONS.FADE,
+            toastId: customId
+          });
+        }
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:8000/mostrarB/" + fecha1 + "/" + fecha2);
+        const json = await response.json();
+
+        this.beneficio = json.beneficios;
+        this.agregarSpan(this.beneficio, "obtenerIngresos", "ingresosObtenidos");
+
+        if (this.beneficio !== "" && this.gastos !== "") {
           if (toast.isActive(customId)) {
-            // Si hay un toast activo, cerrarlo
-              toast.update(customId, {type: toast.TYPE.ERROR , render: "no puede estar vacio las fechas"});
-            } else {
-              // Si no hay un toast activo, mostrar uno nuevo
-              toast.error("no puede estar vacio las fechas", {
-                autoClose: 4000,
-                pauseOnFocusLoss: false,
-                transition: toast.TRANSITIONS.FADE,
-                toastId: "custom-id"
-              });
-            }
-        }else{
-          var fecha_formateada = fecha1.replace(/-/g, '');
-            var fecha_formateada2 = fecha2.replace(/-/g, '');
-            // Dividir la fecha en partes
-            var partes_fecha = fecha_formateada.split('-');
-            var partes_fecha2 = fecha_formateada2.split('-');
-            var fechaCalcular = partes_fecha[0];
-            var fechaCalcular2 = partes_fecha2[0];
-            if(fechaCalcular <= fechaCalcular2){
-                fetch("http://localhost:8000/mostrarG/"+fecha1+"/"+fecha2)
-                .then((response) => response.json())
-                .then((json) => {
-                //console.log(json.categorias);
-                this.gastos = json.gastos;
-                this.agregarSpan(this.gastos,"obtenerGastos","gastosObtenidos")
-                if(this.gastos != "" && this.beneficio != ""){
-                  const customId = 'custom-id'
-                  if (toast.isActive(customId)) {
-                  // Si hay un toast activo, cerrarlo
-                    toast.update(customId, {type: toast.TYPE.INFO , render: "total es " + (this.beneficio-this.gastos)});
-                  } else {
-                    // Si no hay un toast activo, mostrar uno nuevo
-                    toast.info("total es " + (this.beneficio-this.gastos), {
-                      position: toast.POSITION.TOP_CENTER, // Para mostrar el toast desde arriba
-                      autoClose: false, // Para que no se cierre automáticamente
-                      closeButton: false, // Para ocultar el botón de cierre
-                      hideProgressBar: true, // Para ocultar la barra de progreso
-                      toastId: customId,
-                      pauseOnFocusLoss: false,
-                      transition: toast.TRANSITIONS.FLIP,
-                    });
-                  
-                  }
-                }
-              })
-            }else{
-                const customId = 'custom-id'
-                // Verificar si hay un toast activo con el ID "custom-id"
-                if (toast.isActive(customId)) {
-                // Si hay un toast activo, cerrarlo
-                  toast.update(customId, {type: toast.TYPE.ERROR, render: "las fecha primera no puede ser mayor que la 2"});
-                } else {
-                  // Si no hay un toast activo, mostrar uno nuevo
-                  toast.error("las fecha primera no puede ser mayor que la 2", {
-                    autoClose: 4000,
-                    pauseOnFocusLoss: false,
-                    transition: toast.TRANSITIONS.FADE,
-                    toastId: "custom-id"
-                  });
-                }
-            
-            }
+            toast.update(customId, { type: toast.TYPE.INFO, render: "Total es " + (this.beneficio - this.gastos) });
+          } else {
+            toast.info("Total es " + (this.beneficio - this.gastos), {
+              position: toast.POSITION.TOP_CENTER,
+              autoClose: false,
+              closeButton: false,
+              hideProgressBar: true,
+              toastId: customId,
+              pauseOnFocusLoss: false,
+              transition: toast.TRANSITIONS.FLIP
+            });
+          }
         }
+      } catch (error) {
+        console.error("Error al intentar obtener los beneficios:", error);
+      }
     },
-   
+    async ensenyarGastos(fecha1, fecha2) {
+      if (fecha1 === "" || fecha2 === "") {
+        const customId = 'custom-id';
+        if (toast.isActive(customId)) {
+          toast.update(customId, { type: toast.TYPE.ERROR, render: "No puede estar vacío las fechas" });
+        } else {
+          toast.error("No puede estar vacío las fechas", {
+            autoClose: 4000,
+            pauseOnFocusLoss: false,
+            transition: toast.TRANSITIONS.FADE,
+            toastId: "custom-id"
+          });
+        }
+        return; // Detener la ejecución si falta alguna fecha
+      }
+
+      const fecha_formateada = fecha1.replace(/-/g, '');
+      const fecha_formateada2 = fecha2.replace(/-/g, '');
+      const partes_fecha = fecha_formateada.split('-');
+      const partes_fecha2 = fecha_formateada2.split('-');
+      const fechaCalcular = partes_fecha[0];
+      const fechaCalcular2 = partes_fecha2[0];
+
+      if (fechaCalcular > fechaCalcular2) {
+        const customId = 'custom-id';
+        if (toast.isActive(customId)) {
+          toast.update(customId, { type: toast.TYPE.ERROR, render: "La fecha primera no puede ser mayor que la segunda" });
+        } else {
+          toast.error("La fecha primera no puede ser mayor que la segunda", {
+            autoClose: 4000,
+            pauseOnFocusLoss: false,
+            transition: toast.TRANSITIONS.FADE,
+            toastId: "custom-id"
+          });
+        }
+        return; // Detener la ejecución si la fecha 1 es mayor que la fecha 2
+      }
+
+      try {
+        const response = await fetch("http://localhost:8000/mostrarG/" + fecha1 + "/" + fecha2);
+        const json = await response.json();
+
+        this.gastos = json.gastos;
+        this.agregarSpan(this.gastos, "obtenerGastos", "gastosObtenidos");
+
+        if (this.gastos !== "" && this.beneficio !== "") {
+          const total = this.beneficio - this.gastos;
+          const customId = 'custom-id';
+          if (toast.isActive(customId)) {
+            toast.update(customId, { type: toast.TYPE.INFO, render: "Total es " + total });
+          } else {
+            toast.info("Total es " + total, {
+              position: toast.POSITION.TOP_CENTER,
+              autoClose: false,
+              closeButton: false,
+              hideProgressBar: true,
+              toastId: customId,
+              pauseOnFocusLoss: false,
+              transition: toast.TRANSITIONS.FLIP,
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error al intentar obtener los gastos:", error);
+      }
+    },
     agregarSpan(valor,div,id){
       var spanConprobar =  document.getElementById(id)
       
@@ -201,57 +172,54 @@ methods: {
     calcularGastos() {
      
       var spanConprobar = document.getElementById("calculoTotal");
-  if (spanConprobar) {
-    // Si el span ya existe, actualizar su contenido
-    if (this.beneficio2 !== "" && this.gastos2 !== "") {
-      var calculo = (this.beneficio2 - this.gastos2).toFixed(2);
-      spanConprobar.textContent = calculo;
-    } else {
-      const customId = 'custom-id'
-       // Verificar si hay un toast activo con el ID "custom-id"
-      if (toast.isActive(customId)) {
-      // Si hay un toast activo, cerrarlo
-        toast.update(customId, { render: "Por favor, completa ambos campos"});
+      if (spanConprobar) {
+        // Si el span ya existe, actualizar su contenido
+        if (this.beneficio2 !== "" && this.gastos2 !== "") {
+          var calculo = (this.beneficio2 - this.gastos2).toFixed(2);
+          spanConprobar.textContent = calculo;
+        } else {
+          const customId = 'custom-id'
+          // Verificar si hay un toast activo con el ID "custom-id"
+          if (toast.isActive(customId)) {
+          // Si hay un toast activo, cerrarlo
+            toast.update(customId, { render: "Por favor, completa ambos campos"});
+          } else {
+            // Si no hay un toast activo, mostrar uno nuevo
+            toast.error("Por favor, completa ambos campos", {
+              autoClose: 4000,
+              pauseOnFocusLoss: false,
+              transition: toast.TRANSITIONS.FADE,
+              toastId: "custom-id"
+            });
+          }
+        }
       } else {
-        // Si no hay un toast activo, mostrar uno nuevo
-        toast.error("Por favor, completa ambos campos", {
-          autoClose: 4000,
-          pauseOnFocusLoss: false,
-          transition: toast.TRANSITIONS.FADE,
-          toastId: "custom-id"
-        });
+        // Si el span no existe, crear uno nuevo y agregarlo al contenedor
+        if (this.beneficio2 !== "" && this.gastos2 !== "") {
+          var span = document.createElement("span");
+          span.id = "calculoTotal";
+          var divGastosTotales = document.getElementById("gastosIngresoTotal");
+          var calculo = (this.beneficio2 - this.gastos2).toFixed(2);
+          span.textContent = calculo;
+          divGastosTotales.appendChild(span);
+        } else {
+            const customId = 'custom-id'
+        // Verificar si hay un toast activo con el ID "custom-id"
+          if (toast.isActive(customId)) {
+          // Si hay un toast activo, cerrarlo
+            toast.update(customId, { render: "Por favor, completa ambos campos"});
+          } else {
+            // Si no hay un toast activo, mostrar uno nuevo
+            toast.error("Por favor, completa ambos campos", {
+              autoClose: 4000,
+              pauseOnFocusLoss: false,
+              transition: toast.TRANSITIONS.FADE,
+              toastId: "custom-id"
+            });
+          }
+        }
       }
-    }
-  } else {
-    // Si el span no existe, crear uno nuevo y agregarlo al contenedor
-    if (this.beneficio2 !== "" && this.gastos2 !== "") {
-      var span = document.createElement("span");
-      span.id = "calculoTotal";
-      var divGastosTotales = document.getElementById("gastosIngresoTotal");
-      var calculo = (this.beneficio2 - this.gastos2).toFixed(2);
-      span.textContent = calculo;
-      divGastosTotales.appendChild(span);
-    } else {
-        const customId = 'custom-id'
-    // Verificar si hay un toast activo con el ID "custom-id"
-      if (toast.isActive(customId)) {
-      // Si hay un toast activo, cerrarlo
-        toast.update(customId, { render: "Por favor, completa ambos campos"});
-      } else {
-        // Si no hay un toast activo, mostrar uno nuevo
-        toast.error("Por favor, completa ambos campos", {
-          autoClose: 4000,
-          pauseOnFocusLoss: false,
-          transition: toast.TRANSITIONS.FADE,
-          toastId: "custom-id"
-        });
-      }
-    }
-  }
-}
-
-
-    
+    }   
   }
 }
 
