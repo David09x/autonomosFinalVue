@@ -1,7 +1,7 @@
 <script>
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-
+import cargando from '../../js/cargando'
 export default {
 
 data(){
@@ -18,11 +18,13 @@ data(){
         gastos2: ""
     }
 },
+mounted(){
+    this.pantalla = new cargando();
+},
 methods: {
-    
-  async ensenyarBeneficios(fecha1, fecha2) {
+  
+    async ensenyarBeneficios(fecha1, fecha2) {
       const customId = 'custom-id';
-
       if (fecha1 === "" || fecha2 === "") {
         if (toast.isActive(customId)) {
           toast.update(customId, { type: toast.TYPE.ERROR, render: "Las fechas no pueden estar vacías" });
@@ -34,143 +36,138 @@ methods: {
             toastId: customId
           });
         }
-        return;
-      }
+      } else {
+        const fecha_formateada = fecha1.replace(/-/g, '');
+        const fecha_formateada2 = fecha2.replace(/-/g, '');
+        const partes_fecha = fecha_formateada.split('-');
+        const partes_fecha2 = fecha_formateada2.split('-');
+        const fechaCalcular = partes_fecha[0];
+        const fechaCalcular2 = partes_fecha2[0];
 
-      const fecha_formateada = fecha1.replace(/-/g, '');
-      const fecha_formateada2 = fecha2.replace(/-/g, '');
-      const partes_fecha = fecha_formateada.split('-');
-      const partes_fecha2 = fecha_formateada2.split('-');
-      const fechaCalcular = partes_fecha[0];
-      const fechaCalcular2 = partes_fecha2[0];
-
-      if (fechaCalcular > fechaCalcular2) {
-        if (toast.isActive(customId)) {
-          toast.update(customId, { type: toast.TYPE.ERROR, render: "La fecha primera no puede ser mayor que la segunda" });
-        } else {
-          toast.error("La fecha primera no puede ser mayor que la segunda", {
-            autoClose: 4000,
-            pauseOnFocusLoss: false,
-            transition: toast.TRANSITIONS.FADE,
-            toastId: customId
-          });
-        }
-        return;
-      }
-
-      try {
-        const response = await fetch("http://localhost:8000/mostrarB/" + fecha1 + "/" + fecha2);
-        const json = await response.json();
-
-        this.beneficio = json.beneficios;
-        this.agregarSpan(this.beneficio, "obtenerIngresos", "ingresosObtenidos");
-
-        if (this.beneficio !== "" && this.gastos !== "") {
+        if (fechaCalcular > fechaCalcular2) {
           if (toast.isActive(customId)) {
-            toast.update(customId, { type: toast.TYPE.INFO, render: "Total es " + (this.beneficio - this.gastos) });
+            toast.update(customId, { type: toast.TYPE.ERROR, render: "La fecha primera no puede ser mayor que la segunda" });
           } else {
-            toast.info("Total es " + (this.beneficio - this.gastos), {
-              position: toast.POSITION.TOP_CENTER,
-              autoClose: false,
-              closeButton: false,
-              hideProgressBar: true,
-              toastId: customId,
+            toast.error("La fecha primera no puede ser mayor que la segunda", {
+              autoClose: 4000,
               pauseOnFocusLoss: false,
-              transition: toast.TRANSITIONS.FLIP
+              transition: toast.TRANSITIONS.FADE,
+              toastId: customId
             });
           }
+        } else {
+          try {
+            const json = await this.pantalla.fetchConPromesa("http://localhost:8000/mostrarB/" + fecha1 + "/" + fecha2, "Cargando datos...", 2);
+
+            this.beneficio = json.beneficios;
+            this.agregarSpan(this.beneficio, "obtenerIngresos", "ingresosObtenidos");
+
+            if (this.beneficio !== "" && this.gastos !== "") {
+              if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.INFO, render: "Total es " + (this.beneficio - this.gastos) });
+              } else {
+                toast.info("Total es " + (this.beneficio - this.gastos), {
+                  position: toast.POSITION.TOP_CENTER,
+                  autoClose: false,
+                  closeButton: false,
+                  hideProgressBar: true,
+                  toastId: customId,
+                  pauseOnFocusLoss: false,
+                  transition: toast.TRANSITIONS.FLIP
+                });
+              }
+            }
+          } catch (error) {
+            console.error("Error al intentar obtener los beneficios:", error);
+          }
         }
-      } catch (error) {
-        console.error("Error al intentar obtener los beneficios:", error);
       }
     },
     async ensenyarGastos(fecha1, fecha2) {
       if (fecha1 === "" || fecha2 === "") {
         const customId = 'custom-id';
         if (toast.isActive(customId)) {
-          toast.update(customId, { type: toast.TYPE.ERROR, render: "No puede estar vacío las fechas" });
+          toast.update(customId, { type: toast.TYPE.ERROR, render: "Las fechas no pueden estar vacías" });
         } else {
-          toast.error("No puede estar vacío las fechas", {
+          toast.error("Las fechas no pueden estar vacías", {
             autoClose: 4000,
             pauseOnFocusLoss: false,
             transition: toast.TRANSITIONS.FADE,
-            toastId: "custom-id"
+            toastId: customId
           });
         }
-        return; // Detener la ejecución si falta alguna fecha
-      }
+      } else {
+        const fecha_formateada = fecha1.replace(/-/g, '');
+        const fecha_formateada2 = fecha2.replace(/-/g, '');
+        const partes_fecha = fecha_formateada.split('-');
+        const partes_fecha2 = fecha_formateada2.split('-');
+        const fechaCalcular = partes_fecha[0];
+        const fechaCalcular2 = partes_fecha2[0];
 
-      const fecha_formateada = fecha1.replace(/-/g, '');
-      const fecha_formateada2 = fecha2.replace(/-/g, '');
-      const partes_fecha = fecha_formateada.split('-');
-      const partes_fecha2 = fecha_formateada2.split('-');
-      const fechaCalcular = partes_fecha[0];
-      const fechaCalcular2 = partes_fecha2[0];
-
-      if (fechaCalcular > fechaCalcular2) {
-        const customId = 'custom-id';
-        if (toast.isActive(customId)) {
-          toast.update(customId, { type: toast.TYPE.ERROR, render: "La fecha primera no puede ser mayor que la segunda" });
-        } else {
-          toast.error("La fecha primera no puede ser mayor que la segunda", {
-            autoClose: 4000,
-            pauseOnFocusLoss: false,
-            transition: toast.TRANSITIONS.FADE,
-            toastId: "custom-id"
-          });
-        }
-        return; // Detener la ejecución si la fecha 1 es mayor que la fecha 2
-      }
-
-      try {
-        const response = await fetch("http://localhost:8000/mostrarG/" + fecha1 + "/" + fecha2);
-        const json = await response.json();
-
-        this.gastos = json.gastos;
-        this.agregarSpan(this.gastos, "obtenerGastos", "gastosObtenidos");
-
-        if (this.gastos !== "" && this.beneficio !== "") {
-          const total = this.beneficio - this.gastos;
+        if (fechaCalcular > fechaCalcular2) {
           const customId = 'custom-id';
           if (toast.isActive(customId)) {
-            toast.update(customId, { type: toast.TYPE.INFO, render: "Total es " + total });
+            toast.update(customId, { type: toast.TYPE.ERROR, render: "La fecha primera no puede ser mayor que la segunda" });
           } else {
-            toast.info("Total es " + total, {
-              position: toast.POSITION.TOP_CENTER,
-              autoClose: false,
-              closeButton: false,
-              hideProgressBar: true,
-              toastId: customId,
+            toast.error("La fecha primera no puede ser mayor que la segunda", {
+              autoClose: 4000,
               pauseOnFocusLoss: false,
-              transition: toast.TRANSITIONS.FLIP,
+              transition: toast.TRANSITIONS.FADE,
+              toastId: customId
             });
           }
+        } else {
+          try {
+            const json = await this.pantalla.fetchConPromesa("http://localhost:8000/mostrarG/" + fecha1 + "/" + fecha2, "Cargando gastos...", "Cargando");
+
+            this.gastos = json.gastos;
+            this.agregarSpan(this.gastos, "obtenerGastos", "gastosObtenidos");
+
+            if (this.gastos !== "" && this.beneficio !== "") {
+              const total = this.beneficio - this.gastos;
+              const customId = 'custom-id';
+              if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.INFO, render: "Total es " + total });
+              } else {
+                toast.info("Total es " + total, {
+                  position: toast.POSITION.TOP_CENTER,
+                  autoClose: false,
+                  closeButton: false,
+                  hideProgressBar: true,
+                  toastId: customId,
+                  pauseOnFocusLoss: false,
+                  transition: toast.TRANSITIONS.FLIP,
+                });
+              }
+            }
+          } catch (error) {
+            console.error("Error al intentar obtener los gastos:", error);
+          }
         }
-      } catch (error) {
-        console.error("Error al intentar obtener los gastos:", error);
       }
     },
+
     agregarSpan(valor,div,id){
       var spanConprobar =  document.getElementById(id)
       
 
-       if(spanConprobar == null){
+        if(spanConprobar == null){
         var span =  document.createElement("span");
         span.id =  id
-         span.textContent = valor
-         var divAnyadir = document.getElementById(div) 
+          span.textContent = valor
+          var divAnyadir = document.getElementById(div) 
           divAnyadir.appendChild(span)
 
-       }else{
+        }else{
         var span2 = document.getElementById(id)
         span2.textContent =  ""
         span2.textContent = valor
         var divAnyadir = document.getElementById(div) 
           divAnyadir.appendChild(span2)
-       }
+        }
     },
     calcularGastos() {
-     
+      
       var spanConprobar = document.getElementById("calculoTotal");
       if (spanConprobar) {
         // Si el span ya existe, actualizar su contenido
