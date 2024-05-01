@@ -73,7 +73,7 @@ export default class pantallaCarga{
               resolve(json);
             })
             .catch(error => {
-              console.error("Error al obtener las balanzas:", error);
+              console.error("Error en la pagina:", error);
               reject(error);
             })
             .finally(() => {
