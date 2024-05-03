@@ -15,9 +15,6 @@ mounted(){
   this.getServicios()
   this.getProveedores()
 },
-created(){
-//this.getCitas()
-},
 methods: {
 
     getProveedores(){
@@ -37,21 +34,6 @@ methods: {
         this.pantalla.borrarCargando();
       });
     },
-
-    getCitas(){
-      
-    fetch("http://localhost:8000/restaurant")
-    .then((response) => response.json())
-    .then((json) => {
-        //console.log(json.categorias);
-        this.persona = json.categorias;
-        console.log(this.persona)
-    })
-      .finally(() => {
-        this.pantalla.borrarCargando();
-      })
-    
-    }, 
     getServicios(){
       this.pantalla.contadorAumentando("Cargando ...",1)
         fetch("http://localhost:8000/obtenerServicios")
@@ -68,169 +50,148 @@ methods: {
         this.pantalla.borrarCargando();
       })
     },
-    async guardarGasto(idProveedor,descripcion,precio,fecha){
-      try{
-         const response = await fetch("http://localhost:8000/agregarGastos/"+idProveedor+"/"+descripcion+"/"+precio+"/"+fecha)
-            const json = await response.json()
-            this.agregarPobjeto = json
-            const customId = 'custom-id'
+    async guardarGasto(idProveedor, descripcion, precio, fecha) {
+        try {
+            const response = await this.pantalla.fetchConPromesa("http://localhost:8000/agregarGastos/" + idProveedor + "/" + descripcion + "/" + precio + "/" + fecha, "Guardando...", 2);
+            this.agregarPobjeto = response;
+            const customId = 'custom-id';
             // Verificar si hay un toast activo con el ID "custom-id"
             if (toast.isActive(customId)) {
-            // Si hay un toast activo, cerrarlo
-                toast.update(customId, {type: toast.TYPE.SUCCESS, render:"se agrego con exito el gasto"});
+                // Si hay un toast activo, cerrarlo
+                toast.update(customId, { type: toast.TYPE.SUCCESS, render: "Se agregó con éxito el gasto" });
             } else {
                 // Si no hay un toast activo, mostrar uno nuevo
-                toast.success("se agrego con exito el gasto", {
-                autoClose: 4000,
-                pauseOnFocusLoss: false,
-                transition: toast.TRANSITIONS.FADE,
-                toastId: "custom-id"
+                toast.success("Se agregó con éxito el gasto", {
+                    autoClose: 4000,
+                    pauseOnFocusLoss: false,
+                    transition: toast.TRANSITIONS.FADE,
+                    toastId: "custom-id"
                 });
             }
-            
-        }catch(error){
-            console.error("error al intentar agregar gasto", error)
+        } catch (error) {
+            console.error("Error al intentar agregar gasto", error);
         }
     },
-   async comprobarCliente(telefono){
+
+    async comprobarCliente(telefono) {
         try {
-        const response = await fetch("http://localhost:8000/darClienteId/" + telefono);
-        const json = await response.json();
-        this.telefonoC = json;
-        console.log(this.telefonoC.ok);
+            const response = await this.pantalla.fetchConPromesa("http://localhost:8000/darClienteId/" + telefono, "Guardando...", 2);
+            this.telefonoC = response;
+            console.log(this.telefonoC.ok);
         } catch (error) {
             console.error("Error al buscar cliente:", error);
         }
     },
-    async comprobarCitaPrevia(hora,fecha){
-        try{
-         const response = await fetch("http://localhost:8000/buscarCitaPrevia/"+hora+"/"+fecha)
-            const json = await response.json()
-            this.comprobarCitaAntes = json
-            console.log(this.comprobarCitaAntes)
-        }catch(error){
-            console.error("error al intentar buscar cita", error)
-        }
 
-    },
-    async buscarIdCliente(numero){
-        try{
-            const response =  await fetch("http://localhost:8000/darClienteId/" + numero)
-            const json = await response.json()
-            this.idClienteBusqueda = json.idDelCliente[0].id
-            console.log(this.idClienteBusqueda)
-        }catch(error){
-            console.error("error al intentar buscar cita", error)
+    async comprobarCitaPrevia(hora, fecha) {
+        try {
+            const response = await this.pantalla.fetchConPromesa("http://localhost:8000/buscarCitaPrevia/" + hora + "/" + fecha, "Guardando...", 2);
+            this.comprobarCitaAntes = response;
+            console.log(this.comprobarCitaAntes);
+        } catch (error) {
+            console.error("Error al intentar buscar cita:", error);
         }
-
-         
     },
 
-    async anyadirCita(idCliente,idServicio,hora,fecha){
-        try{
-            const response =  await fetch("http://localhost:8000/citas/" + 
-            idCliente+ "/" + idServicio + "/" + hora + "/" + fecha)
-            const json = await response.json()
-            const customId = 'custom-id'
+    async buscarIdCliente(numero) {
+        try {
+            const response = await this.pantalla.fetchConPromesa("http://localhost:8000/darClienteId/" + numero, "Guardando...", 2);
+            this.idClienteBusqueda = response.idDelCliente[0].id;
+            console.log(this.idClienteBusqueda);
+        } catch (error) {
+            console.error("Error al intentar buscar el ID del cliente:", error);
+        }
+    },
+
+
+    async anyadirCita(idCliente, idServicio, hora, fecha) {
+        try {
+            const response = await this.pantalla.fetchConPromesa(
+                "http://localhost:8000/citas/" + idCliente + "/" + idServicio + "/" + hora + "/" + fecha,
+                "Guardando...",2
+            );
+            const customId = 'custom-id';
             // Verificar si hay un toast activo con el ID "custom-id"
             if (toast.isActive(customId)) {
-            // Si hay un toast activo, cerrarlo
-                toast.update(customId, {type: toast.TYPE.SUCCESS, render:"se agrego con exito la cita"});
+                // Si hay un toast activo, cerrarlo
+                toast.update(customId, { type: toast.TYPE.SUCCESS, render: "Se agregó con éxito la cita" });
             } else {
                 // Si no hay un toast activo, mostrar uno nuevo
-                toast.success("se agrego con exito la cita", {
-                autoClose: 4000,
-                pauseOnFocusLoss: false,
-                transition: toast.TRANSITIONS.FADE,
-                toastId: "custom-id"
+                toast.success("Se agregó con éxito la cita", {
+                    autoClose: 4000,
+                    pauseOnFocusLoss: false,
+                    transition: toast.TRANSITIONS.FADE,
+                    toastId: "custom-id"
                 });
             }
-            //alert("se agrego con exito")
-        }catch(error){
-            console.error("error al intentar buscar cita", error)
+        } catch (error) {
+            console.error("Error al intentar añadir cita:", error);
         }
     },
-    async agregarCita(numero,hora,fecha){
-        console.log(numero+ " "+ hora + " " + fecha +  " " +  this.servicioId)
-        const customId = 'custom-id'
-        if(numero.length == 9){
-            await this.comprobarCliente(numero)
-            console.log(this.telefonoC.ok)
-            if(this.telefonoC.ok){ 
-                if(numero != "" && hora != "" && fecha != "" && this.servicioId > 0){
-                   await this.comprobarCitaPrevia(hora,fecha);
-                    if(this.comprobarCitaAntes.ok){
-                        await this.buscarIdCliente(numero)
-                        await this.anyadirCita(this.idClienteBusqueda,this.servicioId,hora,fecha)
-                    }else{
-                     
-                      const customId = 'custom-id'
-                      // Verificar si hay un toast activo con el ID "custom-id"
+
+    async agregarCita(numero, hora, fecha) {
+      console.log(numero + " " + hora + " " + fecha + " " + this.servicioId);
+      const customId = 'custom-id';
+
+      if (numero != "" && hora != "" && fecha != "" && this.servicioId > 0) {
+          if (numero.length == 9) {
+              await this.comprobarCliente(numero);
+              console.log(this.telefonoC.ok);
+              if (this.telefonoC.ok) {
+                  await this.comprobarCitaPrevia(hora, fecha);
+                  if (this.comprobarCitaAntes.ok) {
+                      await this.buscarIdCliente(numero);
+                      await this.anyadirCita(this.idClienteBusqueda, this.servicioId, hora, fecha);
+                  } else {
                       if (toast.isActive(customId)) {
-                      // Si hay un toast activo, cerrarlo
-                          toast.update(customId, {type: toast.TYPE.ERROR, render:this.comprobarCitaAntes.descripcion});
+                          toast.update(customId, { type: toast.TYPE.ERROR, render: this.comprobarCitaAntes.descripcion });
                       } else {
-                          // Si no hay un toast activo, mostrar uno nuevo
                           toast.error(this.comprobarCitaAntes.descripcion, {
+                              autoClose: 4000,
+                              pauseOnFocusLoss: false,
+                              transition: toast.TRANSITIONS.FADE,
+                              toastId: customId
+                          });
+                      }
+                  }
+              } else {
+                  if (toast.isActive(customId)) {
+                      toast.update(customId, { type: toast.TYPE.ERROR, render: this.telefonoC.descripcion });
+                  } else {
+                      toast.error(this.telefonoC.descripcion, {
                           autoClose: 4000,
                           pauseOnFocusLoss: false,
                           transition: toast.TRANSITIONS.FADE,
-                          toastId: "custom-id"
-                          });
-                      }
-                    }
-                }else{
-                 
-                  const customId = 'custom-id'
-                  // Verificar si hay un toast activo con el ID "custom-id"
-                  if (toast.isActive(customId)) {
-                  // Si hay un toast activo, cerrarlo
-                      toast.update(customId, {type: toast.TYPE.ERROR, render:"tienes que agregar todos los campos"});
-                  } else {
-                      // Si no hay un toast activo, mostrar uno nuevo
-                      toast.error("tienes que agregar todos los campos", {
+                          toastId: customId
+                      });
+                  }
+              }
+          } else {
+              if (toast.isActive(customId)) {
+                  toast.update(customId, { type: toast.TYPE.ERROR, render: "El teléfono debe tener 9 dígitos" });
+              } else {
+                  toast.error("El teléfono debe tener 9 dígitos", {
                       autoClose: 4000,
                       pauseOnFocusLoss: false,
                       transition: toast.TRANSITIONS.FADE,
-                      toastId: "custom-id"
-                      });
-                  }
-                }
-            }else{
-             
-              const customId = 'custom-id'
-              // Verificar si hay un toast activo con el ID "custom-id"
-              if (toast.isActive(customId)) {
-              // Si hay un toast activo, cerrarlo
-                  toast.update(customId, {type: toast.TYPE.ERROR, render: this.telefonoC.descripcion});
-              } else {
-                  // Si no hay un toast activo, mostrar uno nuevo
-                  toast.error(this.telefonoC.descripcion, {
+                      toastId: customId
+                  });
+              }
+          }
+      } else {
+          if (toast.isActive(customId)) {
+              toast.update(customId, { type: toast.TYPE.ERROR, render: "Debes completar todos los campos y seleccionar un servicio válido" });
+          } else {
+              toast.error("Debes completar todos los campos y seleccionar un servicio válido", {
                   autoClose: 4000,
                   pauseOnFocusLoss: false,
                   transition: toast.TRANSITIONS.FADE,
-                  toastId: "custom-id"
-                  });
-              }
-            }
-        }else{
-
-        const customId = 'custom-id'
-        // Verificar si hay un toast activo con el ID "custom-id"
-        if (toast.isActive(customId)) {
-        // Si hay un toast activo, cerrarlo
-            toast.update(customId, {type: toast.TYPE.ERROR, render: "el telefono tiene que ser de 9 digitos"});
-        } else {
-            // Si no hay un toast activo, mostrar uno nuevo
-            toast.error("el telefono tiene que ser de 9 digitos", {
-            autoClose: 4000,
-            pauseOnFocusLoss: false,
-            transition: toast.TRANSITIONS.FADE,
-            toastId: "custom-id"
-            });
-        }
-        }
+                  toastId: customId
+              });
+          }
+      }
     },
+
     async agregarProveedor(precio,fecha,descripcion){
       console.log(precio +" "+fecha+" "+descripcion + " " +this.proveedorId)
       if(precio != "" && fecha != "" && descripcion != "" && this.proveedorId >0){
@@ -238,12 +199,12 @@ methods: {
       }else{
       
         const customId = 'custom-id'
-        // Verificar si hay un toast activo con el ID "custom-id"
+     
         if (toast.isActive(customId)) {
-        // Si hay un toast activo, cerrarlo
+     
             toast.update(customId, {type: toast.TYPE.ERROR, render: "tienes algun campo vacio"});
         } else {
-            // Si no hay un toast activo, mostrar uno nuevo
+            
             toast.error("tienes algun campo vacio", {
             autoClose: 4000,
             pauseOnFocusLoss: false,
