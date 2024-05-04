@@ -18,38 +18,28 @@ mounted(){
 methods: {
 
     getProveedores(){
-      this.pantalla.contadorAumentando("Cargando ...",1)
-      fetch("http://localhost:8000/mostrarProveedoresLista")
-    .then((response) => response.json())
-    .then((json) => {
-        //console.log(json.categorias);
-        this.proveedoresLista = json.Proveedores;
-        console.log(this.proveedoresLista)
-    })
-    .catch((error) => {
-        console.error("Error al obtener proveedores:", error);
-        // Aquí puedes manejar el error si lo necesitas
+      this.pantalla.fetchConPromesa("http://localhost:8000/mostrarProveedoresLista", "Cargando ...", 1)
+      .then((json) => {
+          this.proveedoresLista = json.Proveedores;
+          console.log(this.proveedoresLista)
       })
-      .finally(() => {
-        this.pantalla.borrarCargando();
+      .catch((error) => {
+          console.error("Error al obtener proveedores:", error);
       });
     },
-    getServicios(){
-      this.pantalla.contadorAumentando("Cargando ...",1)
-        fetch("http://localhost:8000/obtenerServicios")
-        .then((response) =>  response.json())
-        .then((json)=> {
-            this.servicios = json.servicios
-            console.log(this.servicios)
-        })
-        .catch((error) => {
+
+  getServicios(){
+    this.pantalla.fetchConPromesa("http://localhost:8000/obtenerServicios", "Cargando ...", 1)
+    .then((json)=> {
+        this.servicios = json.servicios
+        console.log(this.servicios)
+    })
+    .catch((error) => {
         console.error("Error al obtener servicios:", error);
         // Aquí puedes manejar el error si lo necesitas
-      })
-      .finally(() => {
-        this.pantalla.borrarCargando();
-      })
-    },
+    });
+  },
+
     async guardarGasto(idProveedor, descripcion, precio, fecha) {
         try {
             const response = await this.pantalla.fetchConPromesa("http://localhost:8000/agregarGastos/" + idProveedor + "/" + descripcion + "/" + precio + "/" + fecha, "Guardando...", 2);

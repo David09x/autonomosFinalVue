@@ -9,7 +9,7 @@
                 <h2 class="text-lg">404 Not Found</h2> <!-- Cambiado a text-lg para un tamaño de texto más grande -->
                 <p class="text-lg">Sorry, an error has occurred. The requested page was not found!</p> <!-- Cambiado a text-lg para un tamaño de texto más grande -->
                 <div class="error-actions">
-                  <span class="glyphicon glyphicon-arrow-left">You will be redirected to login shortly</span>
+                  <span class="glyphicon glyphicon-arrow-left">You will be redirected to citas shortly</span>
                 </div>
               </div>
             </div>
@@ -44,7 +44,7 @@
     mounted() {
       // Redireccionar al login después de 5 segundos
       setTimeout(() => {
-        this.$router.push({ name: 'login' });
+        this.$router.push({ name: 'citas' });
       }, 5000);
     }
   };

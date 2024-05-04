@@ -23,7 +23,6 @@
           <li class="nav-item">
             <router-link to="/dinero" class="nav-link">Calculo</router-link>
           </li>
-         
           <li class="nav-item">
             <button @click="desconectar" class="nav-link">Desconectar</button>
           </li>

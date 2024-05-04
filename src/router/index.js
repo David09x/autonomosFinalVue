@@ -5,6 +5,7 @@ import citas from '../components/agregarCita.vue'
 import tablasGastosIngresos from '../components/mostrarGastosYBeneficios.vue'
 import tablaCitas  from '../components/obtenerCitas.vue'
 import loginUsuario from '../components/login.vue'
+import cargandoEjemplo from '../components/cargandoMostrar.vue'
 import paginaError404 from '../components/error.vue'
 const routes = [
 
@@ -35,6 +36,11 @@ const routes = [
         component: citas
     },
     {
+        path:'/cargandoEjm',
+        name: 'ejemCar',
+        component: cargandoEjemplo
+    },
+    {
         path:'/',
         name: 'login',
         component: loginUsuario
@@ -44,6 +50,7 @@ const routes = [
         name: 'paginaError',
         component: paginaError404
     }
+
 
 ]
 

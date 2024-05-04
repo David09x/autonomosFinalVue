@@ -82,7 +82,7 @@ methods: {
     },
 
     agregarProveedor(nombre, telefono) {
-        this.pantalla.fetchConPromesa("http://localhost:8000/proveedor/" + nombre + "/" + telefono, "Guardando ...",2)
+        this.pantalla.fetchConPromesa("http://localhost:8000/proveedor/" + nombre + "/" + telefono, )
         .then((json) => {
             console.log(json);
             this.estadoP = json;
@@ -145,7 +145,10 @@ methods: {
     comprobacionAgregarCliente(nombre, telefono) {
         const customId = 'custom-id';
         if (nombre === "" || telefono === "") {
+            document.getElementById("telefonoIncorrecto").innerHTML = "";
+            document.getElementById("telefonoIncorrecto").innerHTML = "Los campos no pueden estar vacíos";
             if (toast.isActive(customId)) {
+            
             toast.update(customId, { type: toast.TYPE.ERROR, render: "Los campos no pueden estar vacíos" });
             } else {
             toast.error("Los campos no pueden estar vacíos", {
@@ -189,6 +192,8 @@ methods: {
     comprobacionAgregarProveedor(nombre, telefono) {
         const customId = 'custom-id';
         if (nombre === "" || telefono === "") {
+            document.getElementById("telefonoIncorrecto").innerHTML = "";
+            document.getElementById("telefonoIncorrecto").innerHTML = "Los campos no pueden estar vacíos";
             if (toast.isActive(customId)) {
                 toast.update(customId, { type: toast.TYPE.ERROR, render: "Los campos no pueden estar vacíos" });
             } else {
