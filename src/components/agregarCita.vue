@@ -35,8 +35,7 @@ methods: {
         console.log(this.servicios)
     })
     .catch((error) => {
-        console.error("Error al obtener servicios:", error);
-        // Aquí puedes manejar el error si lo necesitas
+        console.error("Error al obtener servicios:", error);s
     });
   },
 

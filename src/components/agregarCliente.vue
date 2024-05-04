@@ -82,7 +82,7 @@ methods: {
     },
 
     agregarProveedor(nombre, telefono) {
-        this.pantalla.fetchConPromesa("http://localhost:8000/proveedor/" + nombre + "/" + telefono, )
+        this.pantalla.fetchConPromesa("http://localhost:8000/proveedor/" + nombre + "/" + telefono,"Guardando...",2 )
         .then((json) => {
             console.log(json);
             this.estadoP = json;
