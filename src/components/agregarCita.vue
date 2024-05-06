@@ -97,8 +97,7 @@ methods: {
         try {
             const response = await this.pantalla.fetchConPromesa(
                 "http://localhost:8000/citas/" + idCliente + "/" + idServicio + "/" + hora + "/" + fecha,
-                "Guardando...",2
-            );
+                "Guardando...",2);
             const customId = 'custom-id';
             // Verificar si hay un toast activo con el ID "custom-id"
             if (toast.isActive(customId)) {

@@ -77,7 +77,7 @@
           // Manejar la respuesta aquí
           if (data.token) {
             // La solicitud fue exitosa
-            console.log(data.token);
+           
             localStorage.setItem('token', data.token)
             this.$router.push('/citas');
           } else {

@@ -192,8 +192,8 @@ methods: {
     comprobacionAgregarProveedor(nombre, telefono) {
         const customId = 'custom-id';
         if (nombre === "" || telefono === "") {
-            document.getElementById("telefonoIncorrecto").innerHTML = "";
-            document.getElementById("telefonoIncorrecto").innerHTML = "Los campos no pueden estar vacíos";
+            document.getElementById("telefonoIncorrectoP").innerHTML = "";
+            document.getElementById("telefonoIncorrectoP").innerHTML = "Los campos no pueden estar vacíos";
             if (toast.isActive(customId)) {
                 toast.update(customId, { type: toast.TYPE.ERROR, render: "Los campos no pueden estar vacíos" });
             } else {

@@ -175,7 +175,7 @@ export default {
       <button type="submit" class="btn btn-sm btn-primary" @click="getCitas2(fechaGuardada)">Buscar </button>
     </div>
   </div>
-  <div id="tablaCitas"> </div>
+  <div id="tablaCitas"></div>
 </template>
 
 <style scoped>
