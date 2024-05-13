@@ -142,6 +142,7 @@ methods: {
     },
     comprobacionAgregarCliente(nombre, telefono) {
         const customId = 'custom-id';
+        telefono = telefono.trim()
         if (nombre === "" || telefono === "") {
             document.getElementById("telefonoIncorrecto").innerHTML = "";
             document.getElementById("telefonoIncorrecto").innerHTML = "Los campos no pueden estar vacíos";
@@ -189,6 +190,7 @@ methods: {
     },
     comprobacionAgregarProveedor(nombre, telefono) {
         const customId = 'custom-id';
+        telefono = telefono.trim()
         if (nombre === "" || telefono === "") {
             document.getElementById("telefonoIncorrectoP").innerHTML = "";
             document.getElementById("telefonoIncorrectoP").innerHTML = "Los campos no pueden estar vacíos";

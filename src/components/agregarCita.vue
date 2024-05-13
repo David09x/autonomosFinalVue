@@ -116,6 +116,8 @@ methods: {
     async agregarCita(numero, hora, fecha) {
       const customId = 'custom-id';
 
+      numero = numero.trim();
+
       if (numero != "" && hora != "" && fecha != "" && this.servicioId > 0) {
           if (numero.length == 9) {
               await this.comprobarCliente(numero);
@@ -175,7 +177,6 @@ methods: {
     },
 
     async agregarProveedor(precio,fecha,descripcion){
-      
       if(precio != "" && fecha != "" && descripcion != "" && this.proveedorId >0){
          await this.guardarGasto(this.proveedorId,descripcion,precio.toFixed(2),fecha)
       }else{
