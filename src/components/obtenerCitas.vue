@@ -26,7 +26,6 @@ export default {
       this.pantalla.fetchConPromesa("http://localhost:8000/mostrarCitasFecha/" + fechaDada, "Cargando ...", 2)
       .then(json => {
         this.estado = json;
-        console.log(this.estado.citasEncontradas);
         if (this.estado.ok) {
           this.ponerTabla(this.estado.citasEncontradas);
           return json;
@@ -58,7 +57,6 @@ export default {
       if (confirm("Estás seguro de borrar la cita de " + nombre)) {
         this.pantalla.fetchConPromesa("http://localhost:8000/borrarCita/" + id,"Cargando ...", 2)
         .then(json => {
-          console.log(json);
           const customId = 'custom-id';
           if (toast.isActive(customId)) {
             toast.update(customId, { type: toast.TYPE.SUCCESS, render: "Se borró la cita correctamente" });

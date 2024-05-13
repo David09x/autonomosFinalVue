@@ -31,7 +31,6 @@ export default {
                 try {
                     
                     this.gastosM = await this.pantalla.fetchConPromesa("http://localhost:8000/mostrarGastosFechas/" + fecha + "/" + fecha2, "Cargando ...", 2);
-                    console.log(this.gastosM);
                     if (this.gastosM.ok) {
                     this.ponerTablaGastos(this.gastosM.gastos);
                     } else {
@@ -96,7 +95,7 @@ export default {
                     try {
                         const json = await this.pantalla.fetchConPromesa("http://localhost:8000/mostrarBeneficiosFechas/" + fecha + "/" + fecha2, "Cargando ...", 2);
                         this.beneficiosM = json;
-                        console.log(this.beneficiosM);
+                        
                         if (this.beneficiosM.ok) {
                         this.ponerTablaBeneficios(this.beneficiosM.beneficios);
                         } else {

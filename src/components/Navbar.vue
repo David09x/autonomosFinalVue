@@ -24,7 +24,7 @@
             <router-link to="/dinero" class="nav-link">Calculo</router-link>
           </li>
           <li class="nav-item">
-            <button @click="desconectar" class="nav-link">Desconectar</button>
+            <router-link to="/" class="nav-link">Desconectar</router-link>
           </li>
         </ul>
       </div>

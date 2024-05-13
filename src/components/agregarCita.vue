@@ -21,7 +21,6 @@ methods: {
       this.pantalla.fetchConPromesa("http://localhost:8000/mostrarProveedoresLista", "Cargando ...", 1)
       .then((json) => {
           this.proveedoresLista = json.Proveedores;
-          console.log(this.proveedoresLista)
       })
       .catch((error) => {
           console.error("Error al obtener proveedores:", error);
@@ -32,7 +31,6 @@ methods: {
     this.pantalla.fetchConPromesa("http://localhost:8000/obtenerServicios", "Cargando ...", 1)
     .then((json)=> {
         this.servicios = json.servicios
-        console.log(this.servicios)
     })
     .catch((error) => {
         console.error("Error al obtener servicios:", error);s
@@ -66,7 +64,6 @@ methods: {
         try {
             const response = await this.pantalla.fetchConPromesa("http://localhost:8000/darClienteId/" + telefono, "Guardando...", 2);
             this.telefonoC = response;
-            console.log(this.telefonoC.ok);
         } catch (error) {
             console.error("Error al buscar cliente:", error);
         }
@@ -76,7 +73,6 @@ methods: {
         try {
             const response = await this.pantalla.fetchConPromesa("http://localhost:8000/buscarCitaPrevia/" + hora + "/" + fecha, "Guardando...", 2);
             this.comprobarCitaAntes = response;
-            console.log(this.comprobarCitaAntes);
         } catch (error) {
             console.error("Error al intentar buscar cita:", error);
         }
@@ -86,7 +82,7 @@ methods: {
         try {
             const response = await this.pantalla.fetchConPromesa("http://localhost:8000/darClienteId/" + numero, "Guardando...", 2);
             this.idClienteBusqueda = response.idDelCliente[0].id;
-            console.log(this.idClienteBusqueda);
+           
         } catch (error) {
             console.error("Error al intentar buscar el ID del cliente:", error);
         }
@@ -118,13 +114,11 @@ methods: {
     },
 
     async agregarCita(numero, hora, fecha) {
-      console.log(numero + " " + hora + " " + fecha + " " + this.servicioId);
       const customId = 'custom-id';
 
       if (numero != "" && hora != "" && fecha != "" && this.servicioId > 0) {
           if (numero.length == 9) {
               await this.comprobarCliente(numero);
-              console.log(this.telefonoC.ok);
               if (this.telefonoC.ok) {
                   await this.comprobarCitaPrevia(hora, fecha);
                   if (this.comprobarCitaAntes.ok) {
@@ -181,7 +175,7 @@ methods: {
     },
 
     async agregarProveedor(precio,fecha,descripcion){
-      console.log(precio +" "+fecha+" "+descripcion + " " +this.proveedorId)
+      
       if(precio != "" && fecha != "" && descripcion != "" && this.proveedorId >0){
          await this.guardarGasto(this.proveedorId,descripcion,precio.toFixed(2),fecha)
       }else{
