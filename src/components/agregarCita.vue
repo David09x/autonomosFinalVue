@@ -177,25 +177,43 @@ methods: {
     },
 
     async agregarProveedor(precio,fecha,descripcion){
-      if(precio != "" && fecha != "" && descripcion != "" && this.proveedorId >0){
-         await this.guardarGasto(this.proveedorId,descripcion,precio.toFixed(2),fecha)
-      }else{
-      
-        const customId = 'custom-id'
-     
-        if (toast.isActive(customId)) {
-     
-            toast.update(customId, {type: toast.TYPE.ERROR, render: "tienes algun campo vacio"});
-        } else {
-            
-            toast.error("tienes algun campo vacio", {
-            autoClose: 4000,
-            pauseOnFocusLoss: false,
-            transition: toast.TRANSITIONS.FADE,
-            toastId: "custom-id"
-            });
-        }
+      if (precio !== "" && fecha !== "" && descripcion !== "" && this.proveedorId > 0) {
+  
+          precio = precio.replace(',', '.');
+
+          
+          if (!isNaN(precio)) {
+              precio = parseFloat(precio).toFixed(2);
+              await this.guardarGasto(this.proveedorId, descripcion, precio, fecha);
+          } else {
+              const customId = 'custom-id';
+
+              if (toast.isActive(customId)) {
+                  toast.update(customId, { type: toast.TYPE.ERROR, render: "El precio no es un número válido" });
+              } else {
+                  toast.error("El precio no es un número válido", {
+                      autoClose: 4000,
+                      pauseOnFocusLoss: false,
+                      transition: toast.TRANSITIONS.FADE,
+                      toastId: customId
+                  });
+              }
+          }
+      } else {
+          const customId = 'custom-id';
+
+          if (toast.isActive(customId)) {
+              toast.update(customId, { type: toast.TYPE.ERROR, render: "Tienes algún campo vacío" });
+          } else {
+              toast.error("Tienes algún campo vacío", {
+                  autoClose: 4000,
+                  pauseOnFocusLoss: false,
+                  transition: toast.TRANSITIONS.FADE,
+                  toastId: customId
+              });
+          }
       }
+
     },
 
 }  
@@ -254,7 +272,7 @@ methods: {
                 </div>
                 <div class="mb-3">
                   <label for="precio" class="form-label text-center">Precio:</label>
-                  <input type="number" class="form-control" id="precio" v-model="precioP" required>
+                  <input type="text" class="form-control" id="precio" v-model="precioP" required>
                 </div>
                 <div class="mb-3">
                   <label for="fechaP" class="form-label text-center">Fecha:</label>
