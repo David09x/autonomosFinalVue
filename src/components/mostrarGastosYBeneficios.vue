@@ -19,12 +19,8 @@ export default {
     },
     methods: {
         async getGastos(fecha, fecha2) {
-            var fecha_formateada = fecha.replaceAll("-", '');
-            var fecha_formateada2 = fecha2.replaceAll("-", '');
-            var partes_fecha = fecha_formateada.split('-');
-            var partes_fecha2 = fecha_formateada2.split('-');
-            var fechaCalcular = partes_fecha[0];
-            var fechaCalcular2 = partes_fecha2[0];
+            var  fechaCalcular = fecha.replaceAll("-", '');
+            var fechaCalcular2= fecha2.replaceAll("-", '');
             
             if (fecha !== "" && fecha2 !== "") {
                 if (fechaCalcular <= fechaCalcular2) {
@@ -83,12 +79,8 @@ export default {
 
 
         async getBeneficios(fecha, fecha2) {
-            var fecha_formateada = fecha.replaceAll("-", '');
-            var fecha_formateada2 = fecha2.replaceAll("-", '');
-            var partes_fecha = fecha_formateada.split('-');
-            var partes_fecha2 = fecha_formateada2.split('-');
-            var fechaCalcular = partes_fecha[0];
-            var fechaCalcular2 = partes_fecha2[0];
+            var fechaCalcular = fecha.replaceAll("-", '');
+            var fechaCalcular2 = fecha2.replaceAll("-", '');
 
             if (fecha !== "" && fecha2 !== "") {
                 if (fechaCalcular <= fechaCalcular2) {

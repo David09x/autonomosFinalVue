@@ -37,12 +37,8 @@ methods: {
           });
         }
       } else {
-        const fecha_formateada = fecha1.replaceAll("-", '');
-        const fecha_formateada2 = fecha2.replaceAll("-", '');
-        const partes_fecha = fecha_formateada.split('-');
-        const partes_fecha2 = fecha_formateada2.split('-');
-        const fechaCalcular = partes_fecha[0];
-        const fechaCalcular2 = partes_fecha2[0];
+        const fechaCalcular = fecha1.replaceAll("-", '');
+        const fechaCalcular2 = fecha2.replaceAll("-", '');
 
         if (fechaCalcular > fechaCalcular2) {
           if (toast.isActive(customId)) {
@@ -97,12 +93,8 @@ methods: {
           });
         }
       } else {
-        const fecha_formateada = fecha1.replaceAll("-", '');
-        const fecha_formateada2 = fecha2.replaceAll("-", '');
-        const partes_fecha = fecha_formateada.split('-');
-        const partes_fecha2 = fecha_formateada2.split('-');
-        const fechaCalcular = partes_fecha[0];
-        const fechaCalcular2 = partes_fecha2[0];
+        const fechaCalcular = fecha1.replaceAll("-", '');
+        const fechaCalcular2  = fecha2.replaceAll("-", '');
 
         if (fechaCalcular > fechaCalcular2) {
           const customId = 'custom-id';
