@@ -188,8 +188,6 @@ export default {
                 var hora = document.createElement("td");
                 hora.textContent = datos[i]["precio"];
                 var fecha = document.createElement("td");
-
-                // Formatear la fecha antes de agregarla a la celda de la tabla
                 var fechaFormateada = this.formatDate(datos[i]["fecha"]);
                 fecha.textContent = fechaFormateada;
 
@@ -209,7 +207,8 @@ export default {
             var año = fecha.substring(0, 4);
             var mes = fecha.substring(4, 6);
             var dia = fecha.substring(6, 8);
-            return `${dia}-${mes}-${año}`;
+            return dia+"-"+mes+"-"+año;
+            
         },
 
         ponerTablaBeneficios(datos) {
@@ -259,8 +258,6 @@ export default {
                 var precio = document.createElement("td");
                 precio.textContent = datos[i]["precio"];
                 var fecha = document.createElement("td");
-
-                // Formatear la fecha antes de agregarla a la celda de la tabla
                 var fechaFormateada = this.formatDate(datos[i]["fecha"]);
                 fecha.textContent = fechaFormateada;
 
@@ -281,7 +278,6 @@ export default {
 
 <template>
   <div class="row">
-    <!-- Columna para los gastos -->
     <div class="col-md-6">
         <div id="divGastos" class="form-group">
             <label for="ingreso">Gastos</label>
@@ -293,7 +289,6 @@ export default {
             <button type="submit" class="btn btn-sm btn-primary" @click="getGastos(fechaGuardada1,fechaGuardada2)">Mostrar</button>
         </div>
     </div>
-    <!-- Columna para los beneficios -->
     <div class="col-md-6">
         <div id="divBeneficios" class="form-group">
             <label for="ingreso">Beneficios</label>

@@ -29,7 +29,6 @@
    import 'vue3-toastify/dist/index.css';
   export default {
     created() {
-        // Eliminar el token del localStorage al cargar la página de login
         localStorage.removeItem('token');
     },
     mounted() {
@@ -74,15 +73,12 @@
           }
         })
         .then(data => {
-          // Manejar la respuesta aquí
           if (data.token) {
-            // La solicitud fue exitosa
-           
             localStorage.setItem('token', data.token)
             this.$router.push('/citas');
-          } else {
-            // La solicitud falló, mostrar mensaje de error
-            const customId = 'custom-id'
+          }else{
+                // La solicitud falló, mostrar mensaje de error
+                const customId = 'custom-id'
             // Verificar si hay un toast activo con el ID "custom-id"
             if (toast.isActive(customId)) {
             // Si hay un toast activo, cerrarlo
@@ -99,7 +95,6 @@
           }
         })
         .catch(error => {
-          // Manejar errores de red u otros errores
           console.error('Error:', error.message);
         });
       }

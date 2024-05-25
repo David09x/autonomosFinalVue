@@ -248,7 +248,6 @@ methods: {
     <div class="row justify-content-center">
         <div class="col-lg-12">
             <div class="row">
-                <!-- Columna para Agregar Cliente -->
                 <div class="col-md-6">
                     <div class="card border-0 rounded-3 shadow-lg">
                         <div class="card-body p-5">
@@ -269,7 +268,6 @@ methods: {
                         </div>
                     </div>
                 </div>
-                <!-- Columna para Agregar Proveedores -->
                 <div class="col-md-6 mt-5 mt-md-0">
                     <div class="card border-0 rounded-3 shadow-lg">
                         <div class="card-body p-5">
