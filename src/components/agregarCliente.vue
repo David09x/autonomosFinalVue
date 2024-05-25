@@ -182,7 +182,7 @@ methods: {
             document.getElementById("todoCorrecto").innerHTML = "Se agregó el cliente";
             setTimeout(() => {
                 document.getElementById("todoCorrecto").innerHTML = "";
-            }, 1500); // 1500 milisegundos = 1.5 segundos
+            }, 1500);
             this.nombreCliente = "";
             this.telefonoCliente = "";
             }

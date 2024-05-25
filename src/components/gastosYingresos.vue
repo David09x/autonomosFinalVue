@@ -37,8 +37,8 @@ methods: {
           });
         }
       } else {
-        const fecha_formateada = fecha1.replace(/-/g, '');
-        const fecha_formateada2 = fecha2.replace(/-/g, '');
+        const fecha_formateada = fecha1.replaceAll("-", '');
+        const fecha_formateada2 = fecha2.replaceAll("-", '');
         const partes_fecha = fecha_formateada.split('-');
         const partes_fecha2 = fecha_formateada2.split('-');
         const fechaCalcular = partes_fecha[0];
@@ -97,8 +97,8 @@ methods: {
           });
         }
       } else {
-        const fecha_formateada = fecha1.replace(/-/g, '');
-        const fecha_formateada2 = fecha2.replace(/-/g, '');
+        const fecha_formateada = fecha1.replaceAll("-", '');
+        const fecha_formateada2 = fecha2.replaceAll("-", '');
         const partes_fecha = fecha_formateada.split('-');
         const partes_fecha2 = fecha_formateada2.split('-');
         const fechaCalcular = partes_fecha[0];

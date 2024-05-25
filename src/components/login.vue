@@ -31,15 +31,12 @@
     created() {
         localStorage.removeItem('token');
     },
-    mounted() {
-      
+    mounted() { 
       document.getElementById('usuario').addEventListener('keydown', (event) => {
-      
         if (event.key === 'Enter') {
           document.getElementById('password').focus();
         }
       });
-
       
       document.getElementById('password').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {

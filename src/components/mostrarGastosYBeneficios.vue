@@ -19,8 +19,8 @@ export default {
     },
     methods: {
         async getGastos(fecha, fecha2) {
-            var fecha_formateada = fecha.replace(/-/g, '');
-            var fecha_formateada2 = fecha2.replace(/-/g, '');
+            var fecha_formateada = fecha.replaceAll("-", '');
+            var fecha_formateada2 = fecha2.replaceAll("-", '');
             var partes_fecha = fecha_formateada.split('-');
             var partes_fecha2 = fecha_formateada2.split('-');
             var fechaCalcular = partes_fecha[0];
@@ -83,8 +83,8 @@ export default {
 
 
         async getBeneficios(fecha, fecha2) {
-            var fecha_formateada = fecha.replace(/-/g, '');
-            var fecha_formateada2 = fecha2.replace(/-/g, '');
+            var fecha_formateada = fecha.replaceAll("-", '');
+            var fecha_formateada2 = fecha2.replaceAll("-", '');
             var partes_fecha = fecha_formateada.split('-');
             var partes_fecha2 = fecha_formateada2.split('-');
             var fechaCalcular = partes_fecha[0];
@@ -203,7 +203,7 @@ export default {
         },
 
         formatDate(fecha) {
-            // Formatear la fecha de "yyyyMMdd" a "dd-MM-yyyy"
+            // Formatear la fecha de yyyyMMdd a dd-MM-yyyy
             var año = fecha.substring(0, 4);
             var mes = fecha.substring(4, 6);
             var dia = fecha.substring(6, 8);
