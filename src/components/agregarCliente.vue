@@ -229,7 +229,7 @@ methods: {
                 document.getElementById("todoCorrectoP").innerHTML = "Se agregó el proveedor";
                 setTimeout(() => {
                     document.getElementById("todoCorrectoP").innerHTML = "";
-                }, 1500); // 1500 milisegundos = 1.5 segundos
+                }, 1500); 
                 this.nombreProveedor = "";
                 this.telefonoProveedor = "";
             }

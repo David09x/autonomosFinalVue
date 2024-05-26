@@ -28,7 +28,7 @@ export default {
         this.estado = json;
         if (this.estado.ok) {
           this.ponerTabla(this.estado.citasEncontradas);
-          return json;
+          return this.estado;
         } else {
           const customId = 'custom-id';
           if (toast.isActive(customId)) {
@@ -41,8 +41,8 @@ export default {
               toastId: "custom-id"
             });
           }
-          var recogerTabla = document.getElementById("tablaCitas").innerHTML = "";
-          return json;
+          document.getElementById("tablaCitas").innerHTML = "";
+          return this.estado;
         }
       })
       .catch(error => {

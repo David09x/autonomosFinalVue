@@ -71,6 +71,7 @@ methods: {
 
     async comprobarCitaPrevia(hora, fecha) {
         try {
+          console.log(fecha)
             const response = await this.pantalla.fetchConPromesa("http://localhost:8000/buscarCitaPrevia/" + hora + "/" + fecha, "Guardando...", 2);
             this.comprobarCitaAntes = response;
         } catch (error) {
@@ -115,7 +116,6 @@ methods: {
 
     async agregarCita(numero, hora, fecha) {
       const customId = 'custom-id';
-
       numero = numero.trim();
 
       if (numero != "" && hora != "" && fecha != "" && this.servicioId > 0) {

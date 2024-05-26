@@ -114,7 +114,6 @@ methods: {
 
             this.gastos = json.gastos;
             this.agregarSpan(this.gastos, "obtenerGastos", "gastosObtenidos");
-
             if (this.gastos !== "" && this.beneficio !== "") {
               const total = this.beneficio - this.gastos;
               const customId = 'custom-id';
