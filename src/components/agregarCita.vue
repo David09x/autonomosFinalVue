@@ -297,9 +297,9 @@ methods: {
               const customId = 'custom-id';
 
               if (toast.isActive(customId)) {
-                  toast.update(customId, { type: toast.TYPE.ERROR, render: "El precio no es un número válido" });
+                  toast.update(customId, { type: toast.TYPE.ERROR, render: "El precio tiene que ser numerico" });
               } else {
-                  toast.error("El precio no es un número válido", {
+                  toast.error("El precio tiene que ser numerico", {
                       autoClose: 4000,
                       pauseOnFocusLoss: false,
                       transition: toast.TRANSITIONS.FADE,
