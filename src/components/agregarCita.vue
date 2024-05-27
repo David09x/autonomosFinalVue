@@ -221,7 +221,7 @@ methods: {
                   transition: toast.TRANSITIONS.FLIP,
                 });
               }
-        }
+          }
         }
     },
 
