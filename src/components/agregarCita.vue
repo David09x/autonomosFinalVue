@@ -24,6 +24,22 @@ methods: {
       })
       .catch((error) => {
           console.error("Error al obtener proveedores:", error);
+          if(error == "TypeError: NetworkError when attempting to fetch resource." && error instanceof TypeError){
+          const customId = 'custom-id';
+              if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.ERROR, render: "Se ha perdido la conexión con el servidor por favor revisa que este bien conectado" });
+              } else {
+                toast.error("Se ha perdido la conexión con el servidor por favor revisa que este bien conectado", {
+                  position: toast.POSITION.TOP_CENTER,
+                  autoClose: false,
+                  closeButton: false,
+                  hideProgressBar: true,
+                  toastId: customId,
+                  pauseOnFocusLoss: false,
+                  transition: toast.TRANSITIONS.FLIP,
+                });
+              }
+        }
       });
     },
 
@@ -33,7 +49,23 @@ methods: {
         this.servicios = json.servicios
     })
     .catch((error) => {
-        console.error("Error al obtener servicios:", error);s
+        console.error("Error al obtener servicios:", error);
+          if(error == "TypeError: NetworkError when attempting to fetch resource." && error instanceof TypeError){
+          const customId = 'custom-id';
+              if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.ERROR, render: "Se ha perdido la conexión con el servidor por favor revisa que este bien conectado" });
+              } else {
+                toast.error("Se ha perdido la conexión con el servidor por favor revisa que este bien conectado", {
+                  position: toast.POSITION.TOP_CENTER,
+                  autoClose: false,
+                  closeButton: false,
+                  hideProgressBar: true,
+                  toastId: customId,
+                  pauseOnFocusLoss: false,
+                  transition: toast.TRANSITIONS.FLIP,
+                });
+              }
+        }
     });
   },
 
@@ -57,6 +89,22 @@ methods: {
             }
         } catch (error) {
             console.error("Error al intentar agregar gasto", error);
+            if(error == "TypeError: NetworkError when attempting to fetch resource." && error instanceof TypeError){
+                const customId = 'custom-id';
+              if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.ERROR, render: "Se ha perdido la conexión con el servidor por favor revisa que este bien conectado" });
+              } else {
+                toast.error("Se ha perdido la conexión con el servidor por favor revisa que este bien conectado", {
+                  position: toast.POSITION.TOP_CENTER,
+                  autoClose: false,
+                  closeButton: false,
+                  hideProgressBar: true,
+                  toastId: customId,
+                  pauseOnFocusLoss: false,
+                  transition: toast.TRANSITIONS.FLIP,
+                });
+              }
+        }
         }
     },
 
@@ -66,6 +114,22 @@ methods: {
             this.telefonoC = response;
         } catch (error) {
             console.error("Error al buscar cliente:", error);
+            if(error == "TypeError: NetworkError when attempting to fetch resource." && error instanceof TypeError){
+                const customId = 'custom-id';
+              if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.ERROR, render: "Se ha perdido la conexión con el servidor por favor revisa que este bien conectado" });
+              } else {
+                toast.error("Se ha perdido la conexión con el servidor por favor revisa que este bien conectado", {
+                  position: toast.POSITION.TOP_CENTER,
+                  autoClose: false,
+                  closeButton: false,
+                  hideProgressBar: true,
+                  toastId: customId,
+                  pauseOnFocusLoss: false,
+                  transition: toast.TRANSITIONS.FLIP,
+                });
+              }
+        }
         }
     },
 
@@ -75,6 +139,22 @@ methods: {
             this.comprobarCitaAntes = response;
         } catch (error) {
             console.error("Error al intentar buscar cita:", error);
+            if(error == "TypeError: NetworkError when attempting to fetch resource." && error instanceof TypeError){
+                const customId = 'custom-id';
+              if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.ERROR, render: "Se ha perdido la conexión con el servidor por favor revisa que este bien conectado" });
+              } else {
+                toast.error("Se ha perdido la conexión con el servidor por favor revisa que este bien conectado", {
+                  position: toast.POSITION.TOP_CENTER,
+                  autoClose: false,
+                  closeButton: false,
+                  hideProgressBar: true,
+                  toastId: customId,
+                  pauseOnFocusLoss: false,
+                  transition: toast.TRANSITIONS.FLIP,
+                });
+              }
+        }
         }
     },
 
@@ -85,6 +165,22 @@ methods: {
            
         } catch (error) {
             console.error("Error al intentar buscar el ID del cliente:", error);
+            if(error == "TypeError: NetworkError when attempting to fetch resource." && error instanceof TypeError){
+                const customId = 'custom-id';
+              if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.ERROR, render: "Se ha perdido la conexión con el servidor por favor revisa que este bien conectado" });
+              } else {
+                toast.error("Se ha perdido la conexión con el servidor por favor revisa que este bien conectado", {
+                  position: toast.POSITION.TOP_CENTER,
+                  autoClose: false,
+                  closeButton: false,
+                  hideProgressBar: true,
+                  toastId: customId,
+                  pauseOnFocusLoss: false,
+                  transition: toast.TRANSITIONS.FLIP,
+                });
+              }
+        }
         }
     },
 
@@ -110,6 +206,22 @@ methods: {
             }
         } catch (error) {
             console.error("Error al intentar añadir cita:", error);
+            if(error == "TypeError: NetworkError when attempting to fetch resource." && error instanceof TypeError){
+                const customId = 'custom-id';
+              if (toast.isActive(customId)) {
+                toast.update(customId, { type: toast.TYPE.ERROR, render: "Se ha perdido la conexión con el servidor por favor revisa que este bien conectado" });
+              } else {
+                toast.error("Se ha perdido la conexión con el servidor por favor revisa que este bien conectado", {
+                  position: toast.POSITION.TOP_CENTER,
+                  autoClose: false,
+                  closeButton: false,
+                  hideProgressBar: true,
+                  toastId: customId,
+                  pauseOnFocusLoss: false,
+                  transition: toast.TRANSITIONS.FLIP,
+                });
+              }
+        }
         }
     },
 

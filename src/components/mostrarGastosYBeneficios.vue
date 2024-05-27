@@ -46,6 +46,22 @@ export default {
                     }
                 } catch (error) {
                     console.error("Error al intentar agregar gasto", error);
+                    if(error == "TypeError: NetworkError when attempting to fetch resource." && error instanceof TypeError){
+                                const customId = 'custom-id';
+                            if (toast.isActive(customId)) {
+                                toast.update(customId, { type: toast.TYPE.ERROR, render: "Se ha perdido la conexión con el servidor por favor revisa que este bien conectado" });
+                            } else {
+                                toast.error("Se ha perdido la conexión con el servidor por favor revisa que este bien conectado", {
+                                position: toast.POSITION.TOP_CENTER,
+                                autoClose: false,
+                                closeButton: false,
+                                hideProgressBar: true,
+                                toastId: customId,
+                                pauseOnFocusLoss: false,
+                                transition: toast.TRANSITIONS.FLIP,
+                                });
+                            }
+                        }
                 }
                 } else {
                 var recogerTabla = document.getElementById("tablaGastosBeneficios");
@@ -107,6 +123,22 @@ export default {
                         }
                     } catch (error) {
                         console.error("Error al intentar agregar gasto", error);
+                        if(error == "TypeError: NetworkError when attempting to fetch resource." && error instanceof TypeError){
+                                const customId = 'custom-id';
+                            if (toast.isActive(customId)) {
+                                toast.update(customId, { type: toast.TYPE.ERROR, render: "Se ha perdido la conexión con el servidor por favor revisa que este bien conectado" });
+                            } else {
+                                toast.error("Se ha perdido la conexión con el servidor por favor revisa que este bien conectado", {
+                                position: toast.POSITION.TOP_CENTER,
+                                autoClose: false,
+                                closeButton: false,
+                                hideProgressBar: true,
+                                toastId: customId,
+                                pauseOnFocusLoss: false,
+                                transition: toast.TRANSITIONS.FLIP,
+                                });
+                            }
+                        }
                     } 
                 } else {
                 var recogerTabla = document.getElementById("tablaGastosBeneficios");
